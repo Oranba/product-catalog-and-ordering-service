@@ -1,0 +1,22 @@
+{
+  "project": {
+    "name": "Product Catalog & Ordering Service",
+    "description": "Spring Boot microservice for product and order management.",
+    "repository": "https://github.com/Oranba/product-catalog-and-ordering-service"
+  },
+  "codebase": {
+    "languages": [
+      "java"
+    ],
+    "frameworks": [
+      "spring boot"
+    ],
+    "build": "maven"
+  },
+  "tasks": {
+    "generation": {
+      "enabled": true,
+      "prompt_template": "Given the following user request, generate a list of implementation tasks for this Java Spring Boot project."
+    }
+  }
+}
