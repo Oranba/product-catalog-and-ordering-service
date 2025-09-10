@@ -1,4 +1,4 @@
-package health;
+package com.oranba.springboot.catalog.health;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
