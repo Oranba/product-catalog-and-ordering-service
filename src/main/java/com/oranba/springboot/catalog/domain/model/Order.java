@@ -2,13 +2,18 @@ package com.oranba.springboot.catalog.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "orders")
+@Data
 public class Order {
 
+    // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +43,9 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
+
     @PrePersist
     protected void onCreate () {
         createdAt = LocalDateTime.now();
@@ -49,76 +57,18 @@ public class Order {
         updatedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
-    public Long getId () {
-        return id;
+    public void addItem (OrderItem item) {
+        if (orderItems == null) {
+            orderItems = new ArrayList<>();
+        }
+        orderItems.add(item);
+        item.setOrderId(this.getId());
     }
 
-    public void setId (Long id) {
-        this.id = id;
-    }
-
-    public String getOrderNumber () {
-        return orderNumber;
-    }
-
-    public void setOrderNumber (String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public Long getCustomerId () {
-        return customerId;
-    }
-
-    public void setCustomerId (Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public OrderStatus getOrderStatus () {
-        return orderStatus;
-    }
-
-    public void setOrderStatus (OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public BigDecimal getTotalAmount () {
-        return totalAmount;
-    }
-
-    public void setTotalAmount (BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getShippingAddress () {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress (String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public String getBillingAddress () {
-        return billingAddress;
-    }
-
-    public void setBillingAddress (String billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public LocalDateTime getCreatedAt () {
-        return createdAt;
-    }
-
-    public void setCreatedAt (LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt () {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt (LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void removeItem (OrderItem item) {
+        if (orderItems != null) {
+            orderItems.remove(item);
+            item.setOrderId(null);
+        }
     }
 }

@@ -28,7 +28,7 @@ public class BrokerHealthIndicator implements HealthIndicator {
     private boolean checkBrokerStatus() {
         try {
             // Get the Kafka broker connection information
-            return kafkaTemplate.getProducerFactory().createProducer().metrics().size() > 0;
+            return !kafkaTemplate.getProducerFactory().createProducer().metrics().isEmpty();
         } catch (Exception e) {
             return false;
         }
